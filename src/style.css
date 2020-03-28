@@ -1,0 +1,16 @@
+.shapes {
+  display: flex;
+  align-items: flex-start;
+  font-size: medium;
+  text-align: center;
+}
+
+.current-shapes {
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.occupied-shapes {
+  padding: 10px;
+  border: 1px solid black;
+}
