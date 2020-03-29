@@ -1,6 +1,5 @@
 class Game {
-  constructor() {
-  }
+  constructor() { }
 
   createShape(x, y) {
     const shapes = ['triangle', 'quadrangle', 'pentagon', 'hexagon', 'circle', 'ellipse', 'random'];
