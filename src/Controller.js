@@ -4,21 +4,40 @@ class Controller {
     this.view = view;
 
     this.options = {
-      gravity: 2,
-      number: 1
+      numberPerSecond: 1,
+      gravityValue: 2
     }
 
-    this.createStartShapes(this.options.number);
     this.eventHandlers();
+    this.run();
   }
 
-  createStartShapes() {
+  run() {
     setInterval(() => {
-      for (let i = 0; i < this.options.number; i++) {
-        this.game.container.addChild(this.game.createShape());
+      for (let i = 0; i < this.options.numberPerSecond; i++) {
+        this.view.append(this.game.createShape())
       }
     }, 1000)
-    this.view.start(this.game.container, this.options);
+
+    const gameLoop = () => {
+      this.view.updateFields(this.getState());
+      this.view.updateOptions(this.options);
+      this.view.updateContainer(this.options);
+    }
+
+    this.view.app.ticker.add(() => gameLoop());
+  }
+
+  getState() {
+    const numberOfShapes = this.view.container.children.length;
+    const areaOccupied = this.view.container.children.reduce((area, child) => {
+      return area + Math.round(child.width * child.height)
+    }, 0);
+
+    return {
+      numberOfShapes,
+      areaOccupied,
+    }
   }
 
   eventHandlers() {
@@ -31,24 +50,24 @@ class Controller {
       if (e.target) {
         e.target.destroy();
       } else {
-        this.game.container.addChild(this.game.createShape(e.data.global.x, e.data.global.y));
+        this.view.container.addChild(this.game.createShape(e.data.global.x, e.data.global.y));
       }
     })
 
     incNumber.addEventListener('click', e => {
-      this.options.number++;
+      this.options.numberPerSecond++;
     })
 
     decNumber.addEventListener('click', e => {
-      this.options.number--;
+      this.options.numberPerSecond--;
     })
 
     incGravity.addEventListener('click', e => {
-      this.options.gravity++;
+      this.options.gravityValue++;
     })
 
     decGravity.addEventListener('click', e => {
-      this.options.gravity--;
+      this.options.gravityValue--;
     })
   }
 }

@@ -1,107 +1,76 @@
 class Game {
   constructor() {
-    this.container = new PIXI.Container();
   }
 
   createShape(x, y) {
     const shapes = ['triangle', 'quadrangle', 'pentagon', 'hexagon', 'circle', 'ellipse', 'random'];
     const index = Math.floor(Math.random() * shapes.length);
     const type = shapes[index];
-    let shape;
+    let path;
 
     switch (type) {
       case 'triangle':
-        shape = this.createPolygon(3, x, y);
+        path = this.createPolygonPoints(3, x, y);
         break;
       case 'quadrangle':
-        shape = this.createPolygon(4, x, y);
+        path = this.createPolygonPoints(4, x, y);
         break;
       case 'pentagon':
-        shape = this.createPolygon(5, x, y);
+        path = this.createPolygonPoints(5, x, y);
         break;
       case 'hexagon':
-        shape = this.createPolygon(6, x, y);
+        path = this.createPolygonPoints(6, x, y);
         break;
       case 'circle':
-        shape = this.createCircle(x, y);
+        path = this.createPolygonPoints(360, x, y);
         break;
       case 'ellipse':
-        shape = this.createEllipse(x, y);
+        path = this.createPolygonPoints(360, x, y, true);
         break;
       case 'random':
-        shape = this.createPolygon(7);
+        path = this.createPolygonPoints(7, x, y);
         break;
     }
-    return shape;
+    return this.createPolygon(path);
   }
 
-  createPolygon(numberOfSides, x, y) {
-    const isRandom = numberOfSides === 7;
-    const size = this.getRandomFromTo(30, 50);
-    x = x ? x : this.getRandomFromTo(size, 800 - size);
-    y = y ? y : -(size);
-    const step = 2 * Math.PI / numberOfSides;
-    const shift = (Math.PI / 180.0) * -18;
-    const path = [];
+  createPolygon(path) {
     let polygon = new PIXI.Graphics();
-
-    for (let i = 0; i <= numberOfSides; i++) {
-      const curStep = i * step + shift;
-      path.push(x + size * Math.cos(curStep) * (isRandom ? Math.random() : 1), y + size * Math.sin(curStep));
-    }
-
     polygon.lineStyle(0);
-    polygon.beginFill(Math.random() * 0xFFFFFF);
+    polygon.beginFill(this.randomColour());
     polygon.drawPolygon(path);
     polygon.endFill();
-    polygon.interactive = true;
-    polygon.buttonMode = true;
-
+    this.makeInteractive(polygon);
     return polygon;
   }
 
-  createCircle(x, y) {
-    const r = this.getRandomFromTo(30, 50);
-    x = x ? x : this.getRandomFromTo(r, 800 - r);
-    y = y ? y : -(r);
-    let circle = new PIXI.Graphics();
-    circle.lineStyle(0);
-    circle.beginFill(Math.random() * 0xFFFFFF);
-    circle.drawCircle(x, y, r);
-    circle.endFill();
-    circle.interactive = true;
-    circle.buttonMode = true;
-
-    return circle;
-  }
-
-  createEllipse(x, y) {
-    const w = this.getRandomFromTo(30, 50);
-    const h = w / 1.6;
-    x = x ? x : this.getRandomFromTo(h, 800 - h);
-    y = y ? y : -(h);
-    let ellipse = new PIXI.Graphics();
-    ellipse.lineStyle(0);
-    ellipse.beginFill(Math.random() * 0xFFFFFF);
-    ellipse.drawEllipse(x, y, w, h);
-    ellipse.endFill();
-    ellipse.interactive = true;
-    ellipse.buttonMode = true;
-    return ellipse;
-  }
-
-  generateColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '0x';
-
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+  createPolygonPoints(numberOfSides, x, y, isEllipse) {
+    const isRandom = numberOfSides === 7;
+    const size = this.getRandomRange(30, 50);
+    x = x ? x : this.getRandomRange(size, 800 - size);
+    y = y ? y : -size;
+    const step = 2 * Math.PI / numberOfSides;
+    const shift = (Math.PI / 180.0) * -18;
+    let path = [];
+    for (let i = 0; i <= numberOfSides; i++) {
+      const curStep = i * step + shift;
+      const x1 = x + size * Math.cos(curStep) * (isRandom ? Math.random() : 1);
+      const x2 = y - (isEllipse ? 0.5 : -1) * size * Math.sin(curStep);
+      path.push(x1, x2);
     }
-
-    return color;
+    return path;
   }
 
-  getRandomFromTo(from, to) {
+  randomColour() {
+    return Math.random() * 0xFFFFFF;
+  }
+
+  makeInteractive(entity) {
+    entity.interactive = true;
+    entity.buttonMode = true;
+  }
+
+  getRandomRange(from, to) {
     const min = Math.ceil(from);
     const max = Math.floor(to);
     return Math.floor(Math.random() * (max - min)) + min;

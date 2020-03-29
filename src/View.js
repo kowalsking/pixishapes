@@ -4,41 +4,45 @@ class View {
     this.width = width;
     this.height = height;
 
-    this.createApp();
+    this.createCanvas();
+    this.getFields();
   }
 
-  createApp() {
+  createCanvas() {
     this.app = new PIXI.Application({ width: this.width, height: this.height });
+    this.container = new PIXI.Container();
+    this.app.stage.addChild(this.container);
     this.root.appendChild(this.app.view);
   }
 
-  start(container, options) {
-    this.app.ticker.add(delta => gameLoop(delta));
-
-    const gameLoop = (delta) => {
-      this.updateIndicators(container, options);
-      container.children.forEach((child, idx) => {
-        child.y += options.gravity;
-        if (child.y > this.app.screen.height + child.height) {
-          container.removeChild(child);
-        }
-      })
-    }
-    this.app.stage.addChild(container);
+  append(shape) {
+    this.container.addChild(shape);
   }
 
-  updateIndicators(container, options) {
-    const currentShapes = document.querySelector('.current-shapes span');
-    const occupiedShapes = document.querySelector('.occupied-shapes span');
-    const number = document.querySelector('.number');
-    const gravity = document.querySelector('.gravity');
+  updateContainer({ gravityValue }) {
+    this.container.children.forEach((child, idx) => {
+      child.y += gravityValue;
+      if (child.y > this.app.screen.height + child.height) {
+        this.container.removeChild(child);
+      }
+    })
+  }
 
-    currentShapes.textContent = container.children.length;
-    occupiedShapes.textContent = container.children.reduce((area, child) => {
-      return area + Math.round(child.width * child.height)
-    }, 0);
-    number.textContent = options.number;
-    gravity.textContent = options.gravity;
+  getFields() {
+    this.currentShapes = document.querySelector('.current-shapes span');
+    this.occupiedShapes = document.querySelector('.occupied-shapes span');
+    this.numberField = document.querySelector('.numberPerSecond');
+    this.gravityField = document.querySelector('.gravityValue');
+  }
+
+  updateFields({ numberOfShapes, areaOccupied }) {
+    this.currentShapes.textContent = numberOfShapes;
+    this.occupiedShapes.textContent = areaOccupied;
+  }
+
+  updateOptions({ numberPerSecond, gravityValue }) {
+    this.numberField.textContent = numberPerSecond;
+    this.gravityField.textContent = gravityValue;
   }
 }
 
