@@ -50,7 +50,7 @@ class Controller {
       if (e.target) {
         e.target.destroy();
       } else {
-        this.view.container.addChild(this.game.createShape(e.data.global.x, e.data.global.y));
+        this.view.append(this.game.createShape(e.data.global.x, e.data.global.y));
       }
     })
 
