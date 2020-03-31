@@ -1,0 +1,16 @@
+{
+  "extends": ["airbnb-base", "prettier"],
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "rules": {
+    "no-console": 0,
+    "no-restricted-syntax": 0,
+    "no-unused-expressions": "off",
+    "babel/no-unused-expressions": 0
+  }
+}

@@ -1,3 +1,5 @@
+import * as PIXI from "pixi.js";
+
 class View {
   constructor(root, width, height) {
     this.root = root;
@@ -20,19 +22,20 @@ class View {
   }
 
   updateContainer({ gravityValue }) {
-    this.container.children.forEach((child, idx) => {
-      child.y += gravityValue;
-      if (child.y > this.app.screen.height + child.height) {
+    this.container.children.forEach(child => {
+      let childY = child.y;
+      childY += gravityValue;
+      if (childY > this.app.screen.height + child.height) {
         this.container.removeChild(child);
       }
-    })
+    });
   }
 
   getFields() {
-    this.currentShapes = document.querySelector('.current-shapes span');
-    this.occupiedShapes = document.querySelector('.occupied-shapes span');
-    this.numberField = document.querySelector('.numberPerSecond');
-    this.gravityField = document.querySelector('.gravityValue');
+    this.currentShapes = document.querySelector(".current-shapes span");
+    this.occupiedShapes = document.querySelector(".occupied-shapes span");
+    this.numberField = document.querySelector(".numberPerSecond");
+    this.gravityField = document.querySelector(".gravityValue");
   }
 
   updateFields({ numberOfShapes, areaOccupied }) {

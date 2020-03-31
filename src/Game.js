@@ -1,57 +1,66 @@
-class Game {
-  constructor() { }
+import * as PIXI from "pixi.js";
 
-  createShape(x, y) {
-    const shapes = ['triangle', 'quadrangle', 'pentagon', 'hexagon', 'circle', 'ellipse', 'random'];
+class Game {
+  static createShape(x, y) {
+    const shapes = [
+      "triangle",
+      "quadrangle",
+      "pentagon",
+      "hexagon",
+      "circle",
+      "ellipse",
+      "random"
+    ];
     const index = Math.floor(Math.random() * shapes.length);
     const type = shapes[index];
     let path;
 
     switch (type) {
-      case 'triangle':
-        path = this.createPolygonPoints(3, x, y);
+      case "triangle":
+        path = Game.createPolygonPoints(3, x, y);
         break;
-      case 'quadrangle':
-        path = this.createPolygonPoints(4, x, y);
+      case "quadrangle":
+        path = Game.createPolygonPoints(4, x, y);
         break;
-      case 'pentagon':
-        path = this.createPolygonPoints(5, x, y);
+      case "pentagon":
+        path = Game.createPolygonPoints(5, x, y);
         break;
-      case 'hexagon':
-        path = this.createPolygonPoints(6, x, y);
+      case "hexagon":
+        path = Game.createPolygonPoints(6, x, y);
         break;
-      case 'circle':
-        path = this.createPolygonPoints(360, x, y);
+      case "circle":
+        path = Game.createPolygonPoints(360, x, y);
         break;
-      case 'ellipse':
-        path = this.createPolygonPoints(360, x, y, true);
+      case "ellipse":
+        path = Game.createPolygonPoints(360, x, y, true);
         break;
-      case 'random':
-        path = this.createPolygonPoints(7, x, y);
+      case "random":
+        path = Game.createPolygonPoints(7, x, y);
         break;
+      default:
     }
-    return this.createPolygon(path);
+    return Game.createPolygon(path);
   }
 
-  createPolygon(path) {
-    let polygon = new PIXI.Graphics();
+  static createPolygon(path) {
+    const polygon = new PIXI.Graphics();
     polygon.lineStyle(0);
-    polygon.beginFill(this.randomColour());
+    polygon.beginFill(Game.randomColour);
     polygon.drawPolygon(path);
     polygon.endFill();
-    this.makeInteractive(polygon);
+    Game.makeInteractive(polygon);
     return polygon;
   }
 
-  createPolygonPoints(numberOfSides, x, y, isEllipse) {
+  static createPolygonPoints(numberOfSides, xPoint, yPoint, isEllipse) {
     const isRandom = numberOfSides === 7;
-    const size = this.getRandomRange(30, 50);
-    x = x ? x : this.getRandomRange(size, 800 - size);
-    y = y ? y : -size;
-    const step = 2 * Math.PI / numberOfSides;
+    const size = Game.getRandomRange(30, 50);
+    const x = xPoint || Game.getRandomRange(size, 800 - size);
+    const y = yPoint || -size;
+    const step = (2 * Math.PI) / numberOfSides;
     const shift = (Math.PI / 180.0) * -18;
-    let path = [];
-    for (let i = 0; i <= numberOfSides; i++) {
+    const path = [];
+    for (let i = 0; i <= numberOfSides; i += 1) {
       const curStep = i * step + shift;
       const x1 = x + size * Math.cos(curStep) * (isRandom ? Math.random() : 1);
       const x2 = y - (isEllipse ? 0.5 : -1) * size * Math.sin(curStep);
@@ -60,16 +69,17 @@ class Game {
     return path;
   }
 
-  randomColour() {
-    return Math.random() * 0xFFFFFF;
+  static get randomColour() {
+    return Math.random() * 0xffffff;
   }
 
-  makeInteractive(entity) {
+  static makeInteractive(polygon) {
+    const entity = polygon;
     entity.interactive = true;
     entity.buttonMode = true;
   }
 
-  getRandomRange(from, to) {
+  static getRandomRange(from, to) {
     const min = Math.ceil(from);
     const max = Math.floor(to);
     return Math.floor(Math.random() * (max - min)) + min;
