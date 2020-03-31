@@ -14,7 +14,6 @@ class Game {
     const index = Math.floor(Math.random() * shapes.length);
     const type = shapes[index];
     let path;
-
     switch (type) {
       case "triangle":
         path = Game.createPolygonPoints(3, x, y);
@@ -39,15 +38,17 @@ class Game {
         break;
       default:
     }
-    return Game.createPolygon(path);
+    return Game.createPolygon(path, type);
   }
 
-  static createPolygon(path) {
+  static createPolygon(path, type) {
     const polygon = new PIXI.Graphics();
     polygon.lineStyle(0);
     polygon.beginFill(Game.randomColour);
     polygon.drawPolygon(path);
     polygon.endFill();
+    polygon.path = path;
+    polygon.type = type;
     Game.makeInteractive(polygon);
     return polygon;
   }

@@ -7,16 +7,17 @@ module.exports = {
   devServer: {
     publicPath: "/",
     port: 3000,
-    contentBase: path.join(process.cwd(), "dist"),
+    contentBase: path.join(__dirname, "dist"),
     host: "localhost"
   },
   module: {
     rules: [
       {
-        include: [path.resolve(__dirname, "src")],
-        loader: "babel-loader",
-        test: /\.js$/
+        test: /\.(t|j)sx?$/,
+        use: { loader: "ts-loader" },
+        exclude: /node_modules/
       },
+
       {
         test: /\.css$/,
         use: [
@@ -37,15 +38,15 @@ module.exports = {
   },
 
   output: {
-    chunkFilename: "[name].[hash].js",
-    filename: "[name].[hash].js"
+    filename: "[name].[hash].js",
+    path: path.resolve(__dirname, "dist")
   },
 
   mode: "development",
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/index.html"
+      template: "./src/index.html"
     }),
     new CleanWebpackPlugin()
   ]

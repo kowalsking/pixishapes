@@ -1,3 +1,5 @@
+import * as PIXI from "pixi.js";
+
 class Controller {
   constructor(game, view) {
     this.game = game.constructor;
@@ -20,7 +22,7 @@ class Controller {
       intermediateValue += delta;
       if (intermediateValue >= this.ticker.FPS && !this.zeroGravity) {
         intermediateValue = 0;
-        for (let i = 0; i < this.options.numberPerSecond; i = +1) {
+        for (let i = 0; i < this.options.numberPerSecond; i += 1) {
           this.view.append(this.game.createShape());
         }
       }
@@ -52,6 +54,18 @@ class Controller {
     this.view.app.renderer.plugins.interaction.on("pointerdown", e => {
       if (e.target) {
         e.target.destroy();
+        this.view.container.children.forEach(child => {
+          if (e.target.type === child.type) {
+            const kid = child;
+            const color = new PIXI.filters.ColorMatrixFilter();
+            kid.filters = [color];
+            const { matrix } = color;
+
+            for (let i = 0; i <= 9; i += 1) {
+              matrix[i] = Math.random() * Math.random();
+            }
+          }
+        });
       } else {
         this.view.append(
           this.game.createShape(e.data.global.x, e.data.global.y)
@@ -60,19 +74,19 @@ class Controller {
     });
 
     incNumber.addEventListener("click", () => {
-      this.options.numberPerSecond = +1;
+      this.options.numberPerSecond += 1;
       decNumber.classList.remove("disabled");
     });
 
     decNumber.addEventListener("click", () => {
-      this.options.numberPerSecond = -1;
+      this.options.numberPerSecond -= 1;
       if (this.options.numberPerSecond === 0) {
         decNumber.classList.add("disabled");
       }
     });
 
     incGravity.addEventListener("click", () => {
-      this.options.gravityValue = +1;
+      this.options.gravityValue += 1;
       if (decGravity.classList.contains("disabled")) {
         decGravity.classList.remove("disabled");
         this.zeroGravity = false;
@@ -80,7 +94,7 @@ class Controller {
     });
 
     decGravity.addEventListener("click", () => {
-      this.options.gravityValue = -1;
+      this.options.gravityValue -= 1;
       if (this.options.gravityValue === 0) {
         this.zeroGravity = true;
         decGravity.classList.add("disabled");

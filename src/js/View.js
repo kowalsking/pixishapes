@@ -23,10 +23,11 @@ class View {
 
   updateContainer({ gravityValue }) {
     this.container.children.forEach(child => {
-      let childY = child.y;
-      childY += gravityValue;
-      if (childY > this.app.screen.height + child.height) {
-        this.container.removeChild(child);
+      const kid = child;
+
+      kid.y += gravityValue;
+      if (kid.y > this.app.screen.height + kid.height) {
+        this.container.removeChild(kid);
       }
     });
   }
