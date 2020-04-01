@@ -1,11 +1,8 @@
 import "./css/style.css";
-import Game from "./js/Game";
-import View from "./js/View";
-import Controller from "./js/Controller";
+import View from "./View/View";
+import Controller from "./Controller/Controller";
+import config from "./tools/config";
 
-const canvas = document.querySelector("#myCanvas");
-
-const game = new Game();
-const view = new View(canvas, 800, 450);
+const view = new View(config);
 // eslint-disable-next-line no-new
-new Controller(game, view);
+new Controller(view);
