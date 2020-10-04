@@ -14,7 +14,7 @@ class View {
   createCanvas() {
     this.app = new PIXI.Application({
       width: this.width,
-      height: this.height
+      height: this.height,
     });
     this.container = new PIXI.Container();
     this.app.stage.addChild(this.container);
@@ -23,19 +23,6 @@ class View {
 
   append(shape) {
     this.container.addChild(shape);
-  }
-
-  updateContainer({ gravityValue }) {
-    // for each shape we increase the value of the Y axis depending on gravityValue
-    this.container.children.forEach(child => {
-      const kid = child;
-
-      kid.y += gravityValue;
-      // if the child encounters the lower boundary of the container
-      if (kid.y > this.app.screen.height + kid.height) {
-        this.container.removeChild(kid);
-      }
-    });
   }
 
   // update the value of quantity and area ocсupied
@@ -50,11 +37,12 @@ class View {
     fields.gravityField.textContent = gravityValue;
   }
 
-  changeSiblingColour(type) {
-    this.container.children.forEach(child => {
+  changeSiblingColour(type, arr) {
+    this.app;
+    arr.forEach((sh) => {
       // if there are elements of the same type in the container
-      if (type === child.type) {
-        const kid = child;
+      if (type === sh.type) {
+        const kid = sh.body;
         // create color matrix filter
         const color = new PIXI.filters.ColorMatrixFilter();
         kid.filters = [color];

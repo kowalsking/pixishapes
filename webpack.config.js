@@ -8,46 +8,46 @@ module.exports = {
     publicPath: "/",
     port: 3000,
     contentBase: path.join(__dirname, "dist"),
-    host: "localhost"
+    host: "localhost",
   },
   module: {
     rules: [
       {
         test: /\.(t|j)sx?$/,
         use: { loader: "ts-loader" },
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
 
       {
         test: /\.css$/,
         use: [
           {
-            loader: "style-loader"
+            loader: "style-loader",
           },
           {
             loader: "css-loader",
 
             options: {
               importLoaders: 1,
-              sourceMap: true
-            }
-          }
-        ]
-      }
-    ]
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+    ],
   },
 
   output: {
     filename: "[name].[hash].js",
-    path: path.resolve(__dirname, "dist")
+    path: path.resolve(__dirname, "dist"),
   },
 
   mode: "development",
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
+      template: "./src/index.html",
     }),
-    new CleanWebpackPlugin()
-  ]
+    new CleanWebpackPlugin(),
+  ],
 };

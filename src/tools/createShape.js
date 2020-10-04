@@ -2,12 +2,10 @@ import * as PIXI from "pixi.js";
 import config from "./config";
 
 // random colour
-const randomColour = () => {
-  return Math.random() * 0xffffff;
-};
+const randomColour = () => Math.random() * 0xffffff;
 
 // add the ability to interact with the element
-const makeInteractive = polygon => {
+const makeInteractive = (polygon) => {
   const entity = polygon;
   entity.interactive = true;
   entity.buttonMode = true;
@@ -63,7 +61,7 @@ const createShape = (x, y) => {
     "hexagon",
     "circle",
     "ellipse",
-    "random"
+    "random",
   ];
   // get random type of shape
   const index = Math.floor(Math.random() * shapes.length);
