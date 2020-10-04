@@ -37,8 +37,7 @@ class View {
     fields.gravityField.textContent = gravityValue;
   }
 
-  changeSiblingColour(type, arr) {
-    this.app;
+  static changeSiblingColour(type, arr) {
     arr.forEach((sh) => {
       // if there are elements of the same type in the container
       if (type === sh.type) {

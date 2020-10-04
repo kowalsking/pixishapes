@@ -1,5 +1,5 @@
 import { Graphics } from "pixi.js";
-import config from "./config";
+import config from "../tools/config";
 
 type shapeType = {
   type: string;

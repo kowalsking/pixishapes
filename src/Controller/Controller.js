@@ -1,7 +1,7 @@
 import fields from "../tools/fields";
 // import createShape from "../tools/createShape";
 import config from "../tools/config";
-import Shape from "../tools/Shape.ts";
+import Shape from "../Model/Shape.ts";
 
 class Controller {
   constructor(view) {
@@ -78,7 +78,7 @@ class Controller {
         this.shapes.forEach((sh, idx) => {
           if (e.target === sh.body) {
             // change colour of shapes with same type
-            this.view.changeSiblingColour(sh.type, this.shapes);
+            this.view.constructor.changeSiblingColour(sh.type, this.shapes);
             this.removeFromArray(idx);
           }
         });
