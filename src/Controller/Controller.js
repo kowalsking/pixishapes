@@ -1,5 +1,4 @@
 import fields from "../tools/fields";
-// import createShape from "../tools/createShape";
 import config from "../tools/config";
 import Shape from "../Model/Shape.ts";
 
